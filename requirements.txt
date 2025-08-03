@@ -1,5 +1,1 @@
-flask
-flask-cors
-torch
-transformers
-gunicorn
+Flask==2.3.2
