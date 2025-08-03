@@ -5,7 +5,7 @@ import time
 import os
 
 from model import TinyGPT
-from utils import build_prompt  # Assume this builds a full prompt from bot + history + user
+from utils import build_prompt  # builds prompt from bot + history + user
 
 app = Flask(__name__)
 CORS(app)
@@ -19,14 +19,13 @@ def generate_reply():
     history = data.get('history', [])
     bot_prompt = data.get('prompt', 'You are a helpful assistant.')
 
-    # Build prompt with personality + previous messages
     prompt = build_prompt(bot_prompt, history, user_input)
     reply = model.generate_reply(prompt)
 
     def generate():
         for word in reply.split():
             yield f"data: {word} \n\n"
-            time.sleep(0.03)  # Simulate typing
+            time.sleep(0.03)
         yield "data: [END] \n\n"
 
     return Response(generate(), mimetype='text/event-stream')
@@ -38,5 +37,5 @@ def reset_chat():
 
 if __name__ == "__main__":
     import os
-    port = int(os.environ.get("PORT", 5000))
+    port = int(os.environ.get("PORT", 5000))  # Don't hardcode to 5000
     app.run(host="0.0.0.0", port=port)
