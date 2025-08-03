@@ -2,6 +2,7 @@
 from flask import Flask, request, Response
 from flask_cors import CORS
 import time
+import os
 
 from model import TinyGPT
 from utils import build_prompt  # Assume this builds a full prompt from bot + history + user
@@ -36,4 +37,5 @@ def reset_chat():
     return {'status': 'reset'}
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port)
